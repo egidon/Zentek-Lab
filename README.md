@@ -1,140 +1,63 @@
-# Zentek-Lab
-Full-stack Products API built with .NET 6 and React, featuring JWT authentication, mssql database repository pattern, unit &amp; integration tests, and microservices-ready architecture.
+# Zentek Lab
 
-- Overview
-- Tech Stack
-- How to Run Backend
-- How to Run Frontend
-- API Endpoints
-- Architecture Diagram
+Full-stack Products API built with ASP.NET Core and React, with JWT authentication, a SQL-backed repository layer, automated tests, and a simple architecture diagram.
 
-=====================================
-  Zentek-Lab
-======================================
-What is this?
-This is a small full-stack project I built for a senior developer test.
-It’s basically a Products system where you can:
-add products
-view all products
-filter products (like by color)
-and see everything working end-to-end (backend + frontend)
-It’s not overcomplicated on purpose. I tried to keep it clean and realistic.
+## Repository Structure
 
-======================================
-What I used
-======================================
-Backend
-.NET 6 (Web API)
-ADO.NET (no ORM, just direct DB access)
-JWT for authentication
-Stored procedures
-Unit + Integration tests
-Frontend
-React (simple setup, no heavy libraries)
-Axios / fetch for API calls
-Basic UI (nothing fancy, just works)
+- `backend/ProductsService` - .NET 8 Web API for product operations
+- `backend/ProductsService.Tests` - unit and integration tests
+- `backend/JwtProbe` - reserved utility folder for JWT probing helpers
+- `frontend` - React client application
+- `Zentek Sql` - SQL script for the `Zentek` database, products table, and stored procedures
+- `ARCHITECTURE.md` - high-level system diagram
 
-========================================
-How the project is structured
-=========================================
+## Tech Stack
 
-Backend is split into:
-Controller → handles requests
-Services → business logic
-Repository → database stuff
-Models → data structure
-Frontend is also structured (kept similar on purpose):
-controller → API calls
-services → logic
-model → data structure
-components → UI
-I didn’t try to be too clever here. Just clean separation.
+- Backend: ASP.NET Core 8, ADO.NET, JWT Bearer auth
+- Frontend: React, Create React App
+- Database: SQL Server with stored procedures
+- Testing: xUnit and ASP.NET Core integration testing
 
-=======================================
-Features
-=======================================
-Health check (/health) → returns "OK"
-Create product
-Get all products
-Filter products by color
-JWT protection (everything except /health)
-JSON raw view on frontend
-Basic error handling
+## Prerequisites
 
-=====================================
-How to run it
-=====================================
+- .NET 8 SDK
+- Node.js 18+ and npm
+- SQL Server instance if you want to run the repository against a real database
 
-Backend
-cd backend
-dotnet restore
-dotnet run
+## Backend Setup
 
-Runs on:
-http://localhost:5069
+1. Update `backend/ProductsService/appsettings.json` with your local database connection string.
+2. Run the `Zentek Sql` script against your SQL Server instance.
+3. Optionally set `Jwt__Key` and `Jwt__Issuer` as environment variables.
 
+From the repository root:
 
-Frontend
+```powershell
+dotnet run --project backend/ProductsService/ProductsService.csproj
+```
+
+The default local HTTP URL is `http://localhost:5069`.
+
+In development, if `Jwt__Key` is not set, the API uses an in-memory development signing key so no secret needs to be committed.
+
+## Frontend Setup
+
+```powershell
 cd frontend
 npm install
 npm start
+```
 
-Runs on:
-http://localhost:3000
+The React app runs on `http://localhost:3000`.
 
-===================================
-Important config
-==================================
-Check appsettings.json:
-"ConnectionStrings": {
-  "Default": "your_database_connection"
-},
-"DatabaseProvider": "Microsoft.Data.SqlClient"
+## Tests
 
-Make sure your DB is set up and stored procedures exist.
+```powershell
+dotnet test backend/ProductsService.Tests/ProductsService.Tests.csproj
+```
 
-==================================
-Tests
-===================================
-I added:
-Unit tests (for services)
-Integration tests (for API endpoints)
-They are not overdone, just enough to prove things work.
-Run tests:
-dotnet test
+## Notes
 
-====================================
-Architecture (simple idea)
-=====================================
-React App
-    |
-    v
-Products API
-    |
-    v
-Database
-
-
-Events (future idea):
-Products → Orders → Payments
-
-There’s also an event-driven idea where:
-Products service can send events
-Orders and Payments can react to them
-I didn’t fully implement that part, just showed how it would fit.
-
-======================================
-Things I didn’t overdo
-=======================================
-No heavy frameworks
-No unnecessary patterns
-No overengineering
-This is intentional.
-
-========================================
-Why I built it this way
-========================================
-I wanted to show:
-I understand clean structure
-I can keep things simple
-I can build something that actually works end-to-end
+- Build artifacts, local IDE files, logs, and environment files are ignored
+- Production secrets and real credentials should be supplied through environment variables or secure local configuration
+- See `ARCHITECTURE.md` for the service interaction diagram

@@ -416,3 +416,9 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# React and repository-local outputs
+build/
+.DS_Store
+.verify-obj/
+.verify-output/
